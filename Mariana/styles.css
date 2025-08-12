@@ -1,0 +1,155 @@
+:root {
+  --x: 65%;
+  --y: 35%;
+
+  /* your actual gradient definition */
+  --color-orangey: #ff8a4b; /* adjust to match your theme variable */
+  --gradient-orange-crush: linear-gradient(
+    111.45deg,
+    var(--color-orangey) 19.42%,
+    #f7bdf8 73.08%
+  );
+
+  --color-purple: #f7bdf8;
+  --gradient-purple-haze: linear-gradient(
+    153.58deg,
+    var(--color-purple) 32.25%,
+    #2f3cc0 92.68%
+  );
+  
+}
+
+.gradient-purple {
+  min-height: 100svh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--gradient-purple-haze),
+              url("https://assets.codepen.io/16327/noise.png");
+  background-blend-mode: color-dodge;
+
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+ 
+
+.gradient-orange {
+  min-height: 100svh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--gradient-orange-crush),
+              url("https://assets.codepen.io/16327/noise.png");
+  background-blend-mode: color-dodge;
+
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* === Card / center column === */
+.center-box {
+  width: min(92vw, 560px);
+  padding: 28px 22px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Type hierarchy */
+.amount {
+  font-size: clamp(28px, 8vw, 56px);
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.sub {
+  font-size: clamp(18px, 5vw, 28px);
+  margin: 0;
+  opacity: .95;
+}
+.lede {
+  font-size: clamp(16px, 4.5vw, 22px);
+  margin: 0;
+  opacity: .85;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9rem;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 0;
+  background: #fff;
+  color: #222;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,.2);
+}
+.btn:active {
+  transform: translateY(0);
+}
+/* Row that centers the gear under the buttons */
+.settings-row{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px; /* space below the Pay button */
+}
+
+/* Circular gear button with drop shadow */
+.settings-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  
+ 
+  transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+}
+.settings-btn:hover{
+  background: rgba(255,255,255,0.28);
+  transform: translateY(-1px);
+ 
+}
+.settings-btn:active{
+  transform: translateY(0);
+}
+.settings-btn svg{
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.35));
+}
+
+/* Optional: keyboard focus ring */
+.settings-btn:focus-visible{
+  outline: 2px solid rgba(255,255,255,.9);
+  outline-offset: 2px;
+ 
+}
+/* Desktop spacing/layout tweaks */
+@media (min-width: 768px) {
+  .center-box { padding: 36px 32px; gap: 18px; }
+  .button-group { gap: 24px; }
+}
+

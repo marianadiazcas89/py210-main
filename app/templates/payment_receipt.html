@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprobante de Pago</title>
+    <style>
+        body { background: #fffbe6; font-family: Arial, sans-serif; }
+        .container { background: #fff; padding: 2em; border-radius: 10px; max-width: 600px; margin: 2em auto; border: 2px solid orange;}
+        h2 { color: orange; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { border: 1px solid #ccc; padding: 0.5em; text-align: left; }
+        th { background: #f90; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Comprobante de Pago</h2>
+        <p><strong>Proveedor:</strong> {{ provider_name }}</p>
+        <p><strong>Fecha de pago:</strong> {{ fecha_pago }}</p>
+        <p><strong>Total de sesiones:</strong> {{ total_sessions }}</p>
+        <p><strong>Precio por sesión:</strong> ${{ session_price }}</p>
+        <p><strong>Monto total:</strong> ${{ amount_due }}</p>
+        <p><strong>Cuenta:</strong> {{ bank_account }}</p>
+        <p><strong>Referencia de pago:</strong> {{ reference_id }}</p>
+
+        <h3>Detalle de sesiones pagadas:</h3>
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Horas</th>
+            </tr>
+            {% for s in sessions %}
+            <tr>
+                <td>{{ s.Date }}</td>
+                <td>{{ s.NumberSessions }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('main.home') }}">Volver al inicio</a>
+    </div>
+</body>
+</html>

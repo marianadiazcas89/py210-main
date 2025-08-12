@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Providers</title>
+    <style>
+        .form-container { display: none; }
+        .active { display: block; }
+        .button-container { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <button onclick="showForm('add')">Agregar</button>
+        <button onclick="showForm('edit')">Editar</button>
+    </div>
+
+    <!-- Formulario para agregar -->
+<div id="addForm" class="form-container">
+    <h2>Agregar Nuevo Provider</h2>
+    <form id="providerForm">
+        <label>Nombre:</label>
+        <input type="text" name="nombre" id="nombre" required><br>
+
+        <label>País:</label>
+        <input type="text" name="country" id="country" required><br>
+
+        <label>Moneda (ej: MXN, EUR):</label>
+        <input type="text" name="currency" id="currency" required><br>
+
+        <label>Banco:</label>
+        <input type="text" name="banco" id="banco" required><br>
+
+        <label>Clabe/Cuenta:</label>
+        <input type="text" name="cuenta" id="cuenta" required><br>
+        
+        <label>Clase/Servicio:</label>
+        <input type="text" name="clase" id="clase" required><br>
+        
+        <label>Costo x hora:</label>
+        <input type="number" name="costoxh" id="costoxh" step="0.01" required><br>
+        
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+
+    <!-- Formulario para editar -->
+    <div id="editForm" class="form-container">
+        <h2>Editar Provider</h2>
+        <select id="providerSelect">
+            <option value="">Seleccione un provider</option>
+            {% for provider in providers %}
+            <option value="{{ provider.id }}">{{ provider.Name }}</option>
+            {% endfor %}
+        </select>
+        
+        <form id="editProviderForm" style="display:none;">
+            <input type="hidden" id="editId">
+            
+            <label>Nombre:</label>
+            <input type="text" name="editNombre" id="editNombre" required><br>
+            
+            <label>Cuenta (Clabe):</label>
+            <input type="text" name="editCuenta" id="editCuenta" required><br>
+            
+            <label>Banco:</label>
+            <input type="text" name="editBanco" id="editBanco" required><br>
+            
+            <label>Precio por hora:</label>
+            <input type="number" name="editCostoxh" id="editCostoxh" step="0.01" required><br>
+            
+            <button type="submit">Actualizar</button>
+        </form>
+    </div>
+
+    <div id="mensaje"></div>
+
+    <script>
+        function showForm(type) {
+            document.querySelectorAll('.form-container').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById(type + 'Form').classList.add('active');
+        }
+
+        // Agregar nuevo provider
+        document.getElementById("providerForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            fetch("/admin-providers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nombre: document.getElementById("nombre").value,
+                    country: document.getElementById("country").value, 
+                    currency: document.getElementById("currency").value, 
+                    cuenta: document.getElementById("cuenta").value,
+                    banco: document.getElementById("banco").value,
+                    pais: document.getElementById("country").value,
+                    clase: document.getElementById("clase").value,
+                    costoxh: document.getElementById("costoxh").value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("mensaje").textContent = data.mensaje;
+                setTimeout(() => window.location.reload(), 1500);
+            });
+        });
+
+        // Cargar datos del provider seleccionado
+        document.getElementById("providerSelect").addEventListener("change", function() {
+            const providerId = this.value;
+            if (providerId) {
+                fetch(`/get-provider/${providerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.error) {
+                        document.getElementById("editId").value = data.id;
+                        document.getElementById("editNombre").value = data.nombre;
+                        document.getElementById("editCuenta").value = data.cuenta;
+                        document.getElementById("editBanco").value = data.banco;
+                        document.getElementById("editCostoxh").value = data.costoxh;
+                        document.getElementById("editProviderForm").style.display = "block";
+                    } else {
+                        console.error("Error:", data.error);
+                        document.getElementById("mensaje").textContent = data.error;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("mensaje").textContent = "Error al cargar los datos del provider";
+                });
+            } else {
+                document.getElementById("editProviderForm").style.display = "none";
+            }
+        });
+
+        // Actualizar provider
+        document.getElementById("editProviderForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const providerId = document.getElementById("editId").value;
+            fetch(`/update-provider/${providerId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nombre: document.getElementById("editNombre").value,
+                    cuenta: document.getElementById("editCuenta").value,
+                    banco: document.getElementById("editBanco").value,
+                    costoxh: document.getElementById("editCostoxh").value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("mensaje").textContent = data.mensaje;
+                setTimeout(() => window.location.reload(), 1500);
+            });
+        });
+    </script>
+</body>
+</html>

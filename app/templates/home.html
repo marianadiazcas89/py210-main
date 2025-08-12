@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Balance</title>
+    <style>
+        body {
+            background: #1565c0;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .center-box {
+            text-align: center;
+            background: rgba(0,0,0,0.1);
+            padding: 2em 3em;
+            border-radius: 12px;
+        }
+        .balance {
+            font-size: 2em;
+            margin: 1em 0;
+        }
+        .btn {
+            background: #fff;
+            color: #1565c0;
+            border: none;
+            padding: 1em 2em;
+            margin: 0.5em;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #e3f2fd;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-box">
+        <h1>{{ today }}</h1>
+        <div class="balance">Balance: ${{ amountDue }}</div>
+        <a href="{{ url_for('main.register_session') }}"><button class="btn">Registrar sesión</button></a>
+        <a href="{{ url_for('main.make_payment') }}"><button class="btn">Hacer pago</button></a>
+        <a href="{{ url_for('main.admin_providers') }}"><button class="btn">Providers</button></a>
+    </div>
+</body>
+</html>

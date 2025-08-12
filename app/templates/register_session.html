@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario de Registro</title>
+  <style>
+    body {
+      background-color: #e8f5e9;
+      font-family: sans-serif;
+    }
+    .formulario {
+      background-color: #4caf50;
+      padding: 20px;
+      width: 300px;
+      border-radius: 15px;
+      margin: 50px auto;
+      color: white;
+    }
+    .formulario label,
+    .formulario input,
+    .formulario select,
+    .formulario button {
+      display: block;
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    .formulario input,
+    .formulario select {
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+    .formulario button {
+      background-color: white;
+      color: #4caf50;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .confirmacion {
+      text-align: center;
+      margin-top: 15px;
+      color: #2e7d32;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="formulario">
+    <form id="registroForm">
+      <label for="proveedor">Selecciona Provider:</label>
+      <select id="proveedor" name="proveedor">
+        <option value="">--Selecciona--</option>
+        {% for proveedor in proveedores %}
+            <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="fecha">Date:</label>
+      <input type="date" id="fecha" name="fecha">
+
+      <label for="cantidad">Cantidad:</label>
+      <input type="number" id="cantidad" name="cantidad" min="1">
+
+      <button type="submit">Registrar</button>
+    </form>
+
+    <div class="confirmacion" id="mensaje"></div>
+  </div>
+
+  <script>
+    document.getElementById("registroForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const provider_id = document.getElementById("proveedor").value;
+      const fecha = document.getElementById("fecha").value;
+      const cantidad = document.getElementById("cantidad").value;
+
+      fetch("/register-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          provider_id: provider_id,
+          fecha: fecha,
+          cantidad: cantidad
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("mensaje").textContent = data.mensaje || "Registro confirmado";
+      });
+    });
+  </script>
+
+</body>
+</html>

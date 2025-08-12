@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Realizar Pago</title>
+    <style>
+        body { background: orange; font-family: Arial, sans-serif; }
+        .container { background: #fff; padding: 2em; border-radius: 10px; max-width: 600px; margin: 2em auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { border: 1px solid #ccc; padding: 0.5em; text-align: left; }
+        th { background: #f90; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Realizar Pago</h2>
+        <form method="get">
+            <label for="provider">Proveedor:</label>
+            <select id="provider" name="provider_id" onchange="this.form.submit()">
+                <option value="">Seleccione un proveedor</option>
+                {% for p in providers %}
+                    <option value="{{ p.id }}" {% if selected_provider == p.id %}selected{% endif %}>{{ p.Name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        {% if selected_provider %}
+            <div style="margin-top:1em;">
+                <strong>Proveedor:</strong> {{ provider_name }}<br>
+                <strong>Monto a pagar:</strong> ${{ amount_due or 0 }}
+            </div>
+            <table>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Horas</th>
+                </tr>
+                {% for s in sessions %}
+                <tr>
+                    <td>{{ s.Date }}</td>
+                    <td>{{ s.NumberSessions }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <form method="post">
+                <input type="hidden" name="provider_id" value="{{ selected_provider }}">
+                <button type="submit" style="margin-top:1em;">Pagar</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
