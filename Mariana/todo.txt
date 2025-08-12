@@ -1,0 +1,10 @@
+Agregar confirmación de: 
+    Payment
+    Log session
+    O de cualquier interacción "importante"
+
+    Clean code: (normalizar variables, beautify code, add or remove comments, and good practices in general)
+
+
+Pagina de log in 
+
