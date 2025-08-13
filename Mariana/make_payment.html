@@ -2,57 +2,110 @@
 <html lang="es">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Make Payment</title>
-  <link rel="stylesheet" href="styles.css">
+    <title>Make Payment</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="gradient-purple">
   <div class="center-box">
-  <div class="container payment-form">
-    <h2>Make Payment</h2>
-    
-    <form method="get">
-      <label for="provider">Provider:</label>
-      <select id="provider" name="provider_id" onchange="this.form.submit()">
-        <option value="">Select</option>
-        {% for p in providers %}
-          <option value="{{ p.id }}" {% if selected_provider == p.id %}selected{% endif %}>
-            {{ p.Name }}
-          </option>
-        {% endfor %}
-      </select>
-    </form>
-
-    {% if selected_provider %}
-    <div class="provider-info">
-      <strong>Provider:</strong> {{ provider_name }}<br>
-      <strong>Amount due:</strong> ${{ amount_due or 0 }}
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Hours</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for s in sessions %}
-        <tr>
-          <td>{{ s.Date }}</td>
-          <td>{{ s.NumberSessions }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <form method="post">
-      <input type="hidden" name="provider_id" value="{{ selected_provider }}">
-      <button type="submit" class="btn">Pay</button>
+    <div class="container payment-form">
+      <h2>Make Payment</h2>
       
-    </form>
-    
+<!-- Hidde for testing
+       <form method="get">
+        <select id="provider" name="provider_id" onchange="this.form.submit()">
+          <option value="">Select Provider</option>
+          {% for p in providers %}
+            <option value="{{ p.id }}" {% if selected_provider == p.id %}selected{% endif %}>
+              {{ p.Name }}
+            </option>
+          {% endfor %}
+        </select>
+      </form> -->
+
+<!-- 🚧🚧🚧🚧🚧🚧 START MOCKUP DATA FOR LOCAL STYLING -->
+<form method="get">
+  <select
+    id="provider"
+    name="provider_id"
+    onchange='if (this.value && this.value !== "demo") { this.form.submit(); }'
+  >
+    <option value="">Select Provider</option>
+
+    <!-- ✅ Demo option for local styling -->
+    <option value="demo">Demo Provider (Local)</option>
+
+    {% for p in providers %}
+      <option value="{{ p.id }}" {% if selected_provider == p.id %}selected{% endif %}>
+        {{ p.Name }}
+      </option>
+    {% endfor %}
+  </select>
+</form>
+      
+<!-- Table (initially hidden) -->
+<table style="display:none;">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Hours</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>2025-08-01</td><td>2</td></tr>
+    <tr><td>2025-08-05</td><td>3</td></tr>
+    <tr><td>2025-08-07</td><td>1.5</td></tr>
+    <tr><td>2025-08-10</td><td>4</td></tr>
+    <tr><td>2025-08-12</td><td>2.5</td></tr>
+  </tbody>
+</table>
+
+<!-- Provider info (initially hidden) -->
+<div class="provider-info" style="display:none;">
+    <p>Ivan Capdeville: $1000</p>
+</div>
+
+<!-- Pay form (button initially hidden) -->
+<form method="post" id="payForm">
+  <input type="hidden" name="provider_id" value="{{ selected_provider or '' }}">
+  <button type="submit" class="btn" id="payBtn" style="display:none;">Pay</button>
+</form>
+
+      <!-- 🚧🚧🚧🚧🚧🚧 END MOCKUP DATA FOR LOCAL STYLING -->
+
+      <!--
+      {% if selected_provider %}
+      <div class="provider-info">
+        <strong>Provider:</strong> {{ provider_name }}<br>
+        <strong>Amount due:</strong> ${{ amount_due or 0 }}
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Hours</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sessions %}
+          <tr>
+            <td>{{ s.Date }}</td>
+            <td>{{ s.NumberSessions }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <form method="post">
+        <input type="hidden" name="provider_id" value="{{ selected_provider }}">
+        <button type="submit" class="btn">Pay</button>
+      </form>
+      {% endif %}
+      -->
+
+    </div>
   </div>
-  </div>
+
   <!-- GSAP CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="script.js"></script>

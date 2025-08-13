@@ -8,3 +8,4 @@ Agregar confirmación de:
 
 Pagina de log in 
 
+Add a row of total for the Make Payment table
